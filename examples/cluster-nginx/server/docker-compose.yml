@@ -1,0 +1,30 @@
+# 提前打好镜像 chat-demo:1.0.0.1-beta
+# docker build -t chat-demo:1.0.0.1-beta .
+
+version: '2'
+services:
+  chat-server1:
+    image: chat-demo:1.0.0.1-beta
+    ports:
+      - "3001:3000"
+    environment:
+      NAME: chat-server1
+      REDIS_IP: 10.251.8.49
+      REDIS_PORT: 8003
+  chat-server2:
+    image: chat-demo:1.0.0.1-beta
+    ports:
+      - "3002:3000"
+    environment:
+      NAME: chat-server2
+      REDIS_IP: 10.251.8.49
+      REDIS_PORT: 8003
+  chat-server3:
+    image: chat-demo:1.0.0.1-beta
+    ports:
+      - "3003:3000"
+    environment:
+      NAME: chat-server3
+      REDIS_IP: 10.251.8.49
+      REDIS_PORT: 8003
+
