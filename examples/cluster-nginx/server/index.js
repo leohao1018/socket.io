@@ -1,16 +1,36 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+
+//const io = require('socket.io')(server);
+const { Server } = require('socket.io');
+const io = new Server(server, {
+  cors: {
+    origin: ['*', 'http://localhost:82'],
+    credentials: true,
+  },
+});
+
+const { instrument } = require('@socket.io/admin-ui');
 const { createAdapter } = require('@socket.io/redis-adapter');
 const { createClient } = require('redis');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || process.argv.slice(2)[0] || 3000;
 const serverName = process.env.NAME || 'Unknown';
 
-const pubClient = createClient({ host: 'redis', port: 6379 });
+const redisIp = process.env.REDIS_IP || '10.251.8.49';
+const redisPort = process.env.REDIS_PORT || '8003';
+const redisPass = process.env.REDIS_PASS || '123456';
+
+const redisUrl = `redis://:${redisPass}@${redisIp}:${redisPort}`;
+console.log(redisUrl)
+const pubClient = createClient({url: redisUrl});
+//const pubClient = createClient({ host: redisIp, port: redisPort, password: redisPass});
 const subClient = pubClient.duplicate();
 
-io.adapter(createAdapter(pubClient, subClient));
+Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+  io.adapter(createAdapter(pubClient, subClient));
+  //io.listen(port);
+});
 
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
@@ -19,6 +39,11 @@ server.listen(port, () => {
 
 // Routing
 app.use(express.static(__dirname + '/public'));
+
+// admin ui
+instrument(io, {
+  auth: false,
+});
 
 // Chatroom
 
