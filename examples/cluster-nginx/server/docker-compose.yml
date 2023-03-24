@@ -36,6 +36,26 @@ services:
       REDIS_PORT: 8003
     networks:
       - bennet
+  chat-server4:
+    image: chat-demo:1.0.0.1-beta
+    ports:
+      - "3004:3000"
+    environment:
+      NAME: chat-server4
+      REDIS_IP: 10.251.8.49
+      REDIS_PORT: 8003
+    networks:
+      - bennet
+  chat-server5:
+    image: chat-demo:1.0.0.1-beta
+    ports:
+      - "3005:3000"
+    environment:
+      NAME: chat-server5
+      REDIS_IP: 10.251.8.49
+      REDIS_PORT: 8003
+    networks:
+      - bennet
 networks:
   bennet:
     name: compose_network
