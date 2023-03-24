@@ -36,6 +36,6 @@ services:
       - bennet
 networks:
   bennet:
-    external: 
-       name: compose_network
+    name: compose_network
+    external: true
 
