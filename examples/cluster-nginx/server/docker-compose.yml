@@ -1,3 +1,5 @@
+# 提前安装npm依赖
+# npm install 
 # 提前打好镜像 chat-demo:1.0.0.1-beta
 # docker build -t chat-demo:1.0.0.1-beta .
 # docker network create --driver=bridge --subnet=192.168.2.0/24  compose_network 
