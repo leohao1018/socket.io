@@ -28,4 +28,8 @@ services:
       NAME: chat-server3
       REDIS_IP: 10.251.8.49
       REDIS_PORT: 8003
+networks:
+  bennet:
+    external: 
+       name: compose_network
 
